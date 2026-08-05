@@ -174,7 +174,7 @@
     display:flex;align-items:center;justify-content:center;
     font-size:2.6rem;
   }
-  .thumb img{width:100%;height:100%;object-fit:cover;}
+  .thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
   .badge{
     position:absolute;top:12px;left:12px;
     color:#fff;font-size:.68rem;font-weight:700;
@@ -196,6 +196,10 @@
   .card-note{color:var(--ink-soft);font-size:.88rem;flex:1;margin-bottom:14px;}
   .card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .price{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--ink);}
+  .price .was{
+    display:block;font-family:'Work Sans',sans-serif;font-weight:500;
+    font-size:.76rem;color:var(--ink-soft);text-decoration:line-through;
+  }
   .price small{font-family:'Work Sans',sans-serif;font-weight:500;font-size:.7rem;color:var(--ink-soft);display:block;}
   .card-cta{
     display:inline-flex;align-items:center;gap:6px;
@@ -384,15 +388,64 @@
        Troque SEUCODIGO-20 pelo seu ID de Associado Amazon.
   ========================================================= */
   const PRODUCTS = [
-    { name: "Organizador de gavetas modular", cat: "Casa", platform: "amazon", note: "Resolve aquela gaveta bagunçada em 5 minutos.", price: "R$ 39,90", icon: "🗄️", image: "", url: "https://www.amazon.com.br/s?k=organizador+de+gavetas&tag=SEUCODIGO-20" },
-    { name: "Espelho de aumento com luz de LED", cat: "Beleza", platform: "shopee", note: "Pra maquiagem e skincare sem errar detalhe.", price: "R$ 64,90", icon: "💡", image: "", url: "https://shopee.com.br/search?keyword=espelho%20aumento%20led&af_id=SEUCODIGO" },
-    { name: "Air fryer compacta 4L", cat: "Cozinha", platform: "mercadolivre", note: "Achadinho clássico que nunca sai de moda.", price: "R$ 219,00", icon: "🍟", image: "", url: "https://www.mercadolivre.com.br/search?q=air+fryer+4l&matt_tool=SEUCODIGO" },
-    { name: "Suporte ajustável para notebook", cat: "Tech", platform: "amazon", note: "Postura melhor e mesa mais organizada.", price: "R$ 79,90", icon: "💻", image: "", url: "https://www.amazon.com.br/s?k=suporte+notebook&tag=SEUCODIGO-20" },
-    { name: "Kit pincéis de maquiagem 12 peças", cat: "Beleza", platform: "shopee", note: "Cerdas macias, cabo rosê, custo-benefício ótimo.", price: "R$ 45,00", icon: "🖌️", image: "", url: "https://shopee.com.br/search?keyword=kit%20pinceis%20maquiagem&af_id=SEUCODIGO" },
-    { name: "Cesto organizador de tecido", cat: "Casa", platform: "mercadolivre", note: "Deixa qualquer canto com cara de decorado.", price: "R$ 32,50", icon: "🧺", image: "", url: "https://www.mercadolivre.com.br/search?q=cesto+organizador+tecido&matt_tool=SEUCODIGO" },
-    { name: "Garrafa térmica 1L à prova de vazamento", cat: "Casa", platform: "amazon", note: "Mantém gelada o dia inteiro, achado top pro verão.", price: "R$ 54,90", icon: "🧴", image: "", url: "https://www.amazon.com.br/s?k=garrafa+termica+1l&tag=SEUCODIGO-20" },
-    { name: "Fone de ouvido bluetooth com case", cat: "Tech", platform: "shopee", note: "Bateria que dura o dia todo por um preço camarada.", price: "R$ 89,90", icon: "🎧", image: "", url: "https://shopee.com.br/search?keyword=fone%20bluetooth&af_id=SEUCODIGO" },
-    { name: "Jogo de facas com afiador embutido", cat: "Cozinha", platform: "mercadolivre", note: "Corta com facilidade e ainda se afia sozinho.", price: "R$ 97,00", icon: "🔪", image: "", url: "https://www.mercadolivre.com.br/search?q=jogo+facas+afiador&matt_tool=SEUCODIGO" }
+    { name: "Espremedor elétrico mini liquidificador portátil 400ml", cat: "Cozinha", platform: "shopee", note: "Vai pra onde você quiser — suco, vitamina ou leite na hora.", was: "R$ 72,90", price: "R$ 36,99", icon: "🥤", image: "images/espremedor.jpg", url: "https://s.shopee.com.br/9fJpaHVvuF" },
+    { name: "Sandália feminina salto fino elegante", cat: "Moda", platform: "shopee", note: "Um charme só, do 34 ao 39.", was: "R$ 73,90", price: "R$ 49,90", icon: "👡", image: "images/sandalia.jpg", url: "https://s.shopee.com.br/3B6LqwfG6r" },
+    { name: "Tapete felpudo para sala e quarto 2m x 1,5m", cat: "Casa", platform: "mercadolivre", note: "Deixa qualquer ambiente mais aconchegante. Cupom: CASAPROMO", was: "R$ 65,90", price: "R$ 46,25", icon: "🧶", image: "images/tapete.jpg", url: "https://meli.la/1pcH868" },
+    { name: "Kit 46 peças jogo de chave catraca soquete", cat: "Ferramentas", platform: "mercadolivre", note: "Ideal pra reparos em casa. Cupom: QUEROPROMOML", price: "R$ 21,72", icon: "🔧", image: "images/chaves.jpg", url: "https://meli.la/1gytoMd" },
+    { name: "Air fryer fritadeira elétrica digital 4,3L", cat: "Cozinha", platform: "shopee", note: "Praticidade que você merece no dia a dia.", was: "R$ 498,90", price: "R$ 317,63", icon: "🍟", image: "images/airfryer.jpg", url: "https://s.shopee.com.br/1qayHBKIqt" },
+    { name: "Extratora portátil limpa sofá, colchão e tapete", cat: "Casa", platform: "shopee", note: "Cupom de R$ 40 OFF exclusivo direto no produto.", was: "R$ 694,90", price: "R$ 331,55", icon: "🧼", image: "images/extratora.jpg", url: "https://s.shopee.com.br/3g2cTA6hjY" },
+    { name: "Painel sensorial montessoriano educativo", cat: "Infantil", platform: "shopee", note: "Desenvolvimento sensorial e cognitivo. Cupom de 5% OFF no carrinho.", was: "R$ 332,90", price: "R$ 270,66", icon: "🧩", image: "images/painel.jpg", url: "https://s.shopee.com.br/2BDoggwH99" },
+    { name: "Elásticos porta rabo de cavalo coloridos (pacote)", cat: "Infantil", platform: "shopee", note: "Quem é mãe de menina vai entender.", was: "R$ 19,90", price: "R$ 11,98", icon: "🎀", image: "images/elasticos.jpg", url: "https://s.shopee.com.br/5fngrP71L0" },
+    { name: "Tênis Adidas Acelera Running Esportivo Conforto — Feminino", cat: "Moda", platform: "mercadolivre", note: "Conforto pra correr ou só pro dia a dia.", price: "R$ 261,57", icon: "👟", image: "https://http2.mlstatic.com/D_Q_NP_2X_852090-MLB113631863242_072026-V-tnis-adidas-acelera-running-esportivo-conforto-feminino.webp", url: "https://meli.la/2ZxJLtV" },
+    { name: "Aparelho Fondue Pop antiaderente 7 peças", cat: "Cozinha", platform: "mercadolivre", note: "Forma + 4 garfos, pronto pra noite especial.", price: "R$ 45,00", icon: "🫕", image: "https://http2.mlstatic.com/D_Q_NP_2X_981882-MLA83466721261_042025-V.webp", url: "https://meli.la/1AZXtTi" },
+    { name: "Cadeira de escritório ergonômica com suporte lombar", cat: "Casa", platform: "mercadolivre", note: "Conforto pro home office o dia inteiro.", price: "R$ 233,40", icon: "🪑", image: "https://http2.mlstatic.com/D_Q_NP_2X_638493-MLA112539327719_052026-V.webp", url: "https://meli.la/28vYVto" },
+    { name: "Galheteiro 5 peças com suporte de bambu", cat: "Cozinha", platform: "shopee", note: "Saleiro, pimenteiro e mais, organizado na bancada.", price: "R$ 94,91", icon: "🧂", image: "https://cf.shopee.com.br/file/br-11134207-820li-mlmc55f1ecjr7f", url: "https://s.shopee.com.br/6L3NyZXAWr" },
+    { name: "Buffet Casual Baixos transparente — Nany Pink", cat: "Beleza", platform: "mercadolivre", note: "Base pra deixar a unha impecável.", price: "R$ 18,75", icon: "💅", image: "https://http2.mlstatic.com/D_Q_NP_2X_741124-MLA112167396206_062026-V.webp", url: "https://meli.la/2c45t7f" },
+    { name: "Kit 3 quadros cabeceira coração + frase", cat: "Casa", platform: "shopee", note: "Decoração pra deixar o quarto mais aconchegante.", price: "R$ 32,90", icon: "🖼️", image: "https://cf.shopee.com.br/file/br-11134207-7r98o-mdkrtz0rgamp0f", url: "https://s.shopee.com.br/4Vbjmco13S" },
+    { name: "Ventilador de Torre WAP Air Silence 4 velocidades", cat: "Casa", platform: "mercadolivre", note: "Refresca o ambiente sem fazer barulho.", price: "R$ 261,82", icon: "🌀", image: "https://http2.mlstatic.com/D_Q_NP_2X_987425-MLA99506602936_112025-V.webp", url: "https://meli.la/1e8x5hY" },
+    { name: "Relógio masculino Time Verde resistente à água", cat: "Moda", platform: "shopee", note: "Estilo e resistência no dia a dia.", price: "R$ 49,99", icon: "⌚", image: "https://cf.shopee.com.br/file/br-11134207-7r98o-mcya3v119wz6f4", url: "https://s.shopee.com.br/6fgEM7rszd" },
+    { name: "Blusa feminina manga 3/4 evangélica moda social", cat: "Moda", platform: "shopee", note: "Elegante e discreta, em várias cores.", price: "R$ 89,90", icon: "👚", image: "https://cf.shopee.com.br/file/br-11134207-81z1k-mggz2hekxkw059", url: "https://s.shopee.com.br/9ANZKS6po1" },
+    { name: "Sortidos Laune Haus", cat: "Diversos", platform: "mercadolivre", note: "Achadinho variado, confira os detalhes na página.", price: "R$ 29,00", icon: "🎁", image: "https://http2.mlstatic.com/D_Q_NP_2X_854524-MLA110456393027_042026-V.webp", url: "https://meli.la/2pb1oFu" },
+    { name: "Pasta Rosa desengraxante Fuzetto multiuso", cat: "Casa", platform: "shopee", note: "Limpeza pesada pra cozinha, mármore, piso e azulejo.", price: "R$ 10,99", icon: "🧽", image: "https://cf.shopee.com.br/file/br-11134207-820md-mnuarpj1ci6ad0", url: "https://s.shopee.com.br/5LAqkhmHB2" },
+    { name: "Whey Protein Concentrado 1kg refil — FTW", cat: "Saúde", platform: "shopee", note: "Refil prático pra manter a rotina fitness.", price: "R$ 196,90", icon: "💪", image: "https://cf.shopee.com.br/file/br-11134207-820lc-mqdi4h8b6wao80", url: "https://s.shopee.com.br/9Kgzi92s2y" },
+    { name: "Chaleira Roma com apito 2,7L indução aço inox", cat: "Cozinha", platform: "mercadolivre", note: "Design granito, esquenta rápido no fogão de indução.", price: "R$ 80,25", icon: "🫖", image: "https://http2.mlstatic.com/D_Q_NP_2X_611371-MLA96105694675_102025-V.webp", url: "https://meli.la/2p3XHrx" },
+    { name: "Costela de Adão artificial em vaso completa", cat: "Casa", platform: "shopee", note: "Verde o ano inteiro, sem precisar regar.", price: "R$ 165,90", icon: "🌿", image: "https://cf.shopee.com.br/file/br-11134207-820m1-mo47zj99eyo45c", url: "https://s.shopee.com.br/1gHYNHhvzp" },
+    { name: "DUX Human Health Fish Oil Ômega-3 120 cápsulas", cat: "Saúde", platform: "mercadolivre", note: "EPA e DHA pra rotina de suplementação.", price: "R$ 76,00", icon: "💊", image: "https://http2.mlstatic.com/D_Q_NP_2X_725187-MLA114660024241_072026-V.webp", url: "https://meli.la/1vkTFyC" },
+    { name: "Cama de solteiro Easy Like com cama auxiliar", cat: "Casa", platform: "shopee", note: "Corano bege/amêndoa, ótima pra quarto de visita.", price: "R$ 818,71", icon: "🛏️", image: "https://cf.shopee.com.br/file/sg-11134201-82272-mhuukn2a8f0jae", url: "https://s.shopee.com.br/8AV26mCyBv" },
+    { name: "Torneira inox com chuveiro giratório 360°", cat: "Casa", platform: "shopee", note: "Praticidade pra cozinha com visual de luxo.", price: "R$ 25,99", icon: "🚿", image: "https://cf.shopee.com.br/file/br-11134207-820l4-mnjsggi53abk16", url: "https://s.shopee.com.br/7psAJUxiLU" },
+    { name: "Cabeceira Cama Box orgânica King 200cm linho", cat: "Casa", platform: "shopee", note: "Tratamento hidrofóbico, fácil de limpar.", price: "R$ 299,90", icon: "🛏️", image: "https://cf.shopee.com.br/file/br-11134207-820lu-mn4rvytxumtgbb", url: "https://s.shopee.com.br/5LAqinyT9P" },
+    { name: "Mesinha infantil portátil com porta objetos", cat: "Infantil", platform: "shopee", note: "Pra estudo, lanche ou suporte de tablet no colo.", price: "R$ 80,90", icon: "🧒", image: "https://cf.shopee.com.br/file/br-11134207-820m9-mmvovsci4xdwda", url: "https://s.shopee.com.br/1BLGTP5Np9" },
+    { name: "Anti Odor 16L", cat: "Casa", platform: "mercadolivre", note: "Ambiente sempre com cheirinho bom.", price: "R$ 53,00", icon: "🧴", image: "https://http2.mlstatic.com/D_Q_NP_2X_777898-MLA110948617964_052026-V.webp", url: "https://meli.la/1ghdAER" },
+    { name: "Purificador de Água Natural Consul CPC31ABONA", cat: "Casa", platform: "shopee", note: "Água fresca e filtrada direto na cozinha.", price: "R$ 332,90", icon: "💧", image: "https://cf.shopee.com.br/file/sg-11134201-7rd52-lwrajknuyaew8a", url: "https://s.shopee.com.br/9fJprrVOcF" },
+    { name: "Kit Wella Brilliance shampoo 250ml + máscara 150ml", cat: "Beleza", platform: "mercadolivre", note: "Brilho e nutrição pro cabelo colorido.", price: "R$ 151,14", icon: "💆‍♀️", image: "https://http2.mlstatic.com/D_Q_NP_2X_777300-MLA99371509560_112025-V.webp", url: "https://meli.la/2AWL7w2" },
+    { name: "Sofá Cama Nami 1,50m tecido velourê", cat: "Casa", platform: "shopee", note: "Vira cama em segundos, ótimo pra espaço pequeno.", price: "R$ 1009,00", icon: "🛋️", image: "https://cf.shopee.com.br/file/sg-11134201-820ng-mnn6cfx8jk05d9", url: "https://s.shopee.com.br/50Y0IxmeA7" },
+    { name: "SuperCoffee Língua de Gato 380g Caffeine Army", cat: "Saúde", platform: "mercadolivre", note: "Café funcional pra rotina fitness.", price: "R$ 140,00", icon: "☕", image: "https://http2.mlstatic.com/D_Q_NP_2X_865001-MLA99502014878_112025-V.webp", url: "https://meli.la/2wXwJTh" },
+    { name: "Air Fryer Gaabor 1,4L com timer e antiaderente", cat: "Cozinha", platform: "shopee", note: "900w de potência num tamanho compacto.", price: "R$ 401,90", icon: "🍟", image: "https://cf.shopee.com.br/file/br-11134207-81ztc-mjhtoja0hg5fea", url: "https://s.shopee.com.br/5fnh5J6OX4" },
+    { name: "Relógio ultrafino 7,94mm resistente à poeira e água IP54", cat: "Moda", platform: "mercadolivre", note: "Design fino que combina com qualquer look.", price: "R$ 719,10", icon: "⌚", image: "https://http2.mlstatic.com/D_Q_NP_2X_806187-MLA109269718722_042026-V.webp", url: "https://meli.la/2oM5jnD" },
+    { name: "Calça legging fitness flare cintura alta", cat: "Moda", platform: "shopee", note: "Zero transparência, corte bailarina.", price: "R$ 99,90", icon: "🧘‍♀️", image: "https://cf.shopee.com.br/file/br-11134207-820mf-mnzvyq80jc3lff", url: "https://s.shopee.com.br/7AcUqf9MRt" },
+    { name: "Geladeira Brastemp Frost Free 385L Duplex Inox", cat: "Casa", platform: "shopee", note: "Espaço de sobra sem acumular gelo.", price: "R$ 2.782,08", icon: "🧊", image: "https://cf.shopee.com.br/file/sg-11134201-8259b-mrhg4jkcn40702", url: "https://s.shopee.com.br/3B6MDxjab1" },
+    { name: "Jogo com 5 potes de vidro herméticos redondos", cat: "Cozinha", platform: "mercadolivre", note: "Ideal pra marmita e organização da geladeira.", price: "R$ 14,93", icon: "🫙", image: "https://http2.mlstatic.com/D_Q_NP_2X_607421-MLA100085867459_122025-V.webp", url: "https://meli.la/2Y5HZip" },
+    { name: "Mesa de cabeceira compacta com nicho", cat: "Casa", platform: "shopee", note: "Ideal pra quarto pequeno, cabe em qualquer canto.", price: "R$ 63,90", icon: "🛏️", image: "https://cf.shopee.com.br/file/br-11134207-820lj-mlp7tzubn3et9d", url: "https://s.shopee.com.br/7psBcrjo2O" },
+    { name: "Porta talher de cerâmica pintado à mão", cat: "Cozinha", platform: "shopee", note: "Organiza os utensílios com um toque artesanal.", price: "R$ 99,90", icon: "🍽️", image: "https://cf.shopee.com.br/file/br-11134207-820m1-mp163p5t36dd3d", url: "https://s.shopee.com.br/3LPmGJPo8F" },
+    { name: "Máscara Wella Invigo Nutri-Enrich 150ml", cat: "Beleza", platform: "mercadolivre", note: "Nutrição profunda pro cabelo ressecado.", price: "R$ 79,00", icon: "💇‍♀️", image: "https://http2.mlstatic.com/D_Q_NP_2X_893611-MLA108501099291_032026-V.webp", url: "https://meli.la/1UmoiNy" },
+    { name: "Vestido Macaquinho boho chic frente única", cat: "Moda", platform: "shopee", note: "Soltinho, com amarração e um toque elegante.", price: "R$ 88,90", icon: "👗", image: "https://cf.shopee.com.br/file/br-11134207-81z1k-mesm03q3twcg72", url: "https://s.shopee.com.br/LmAfq87vm" },
+    { name: "Kit cesto organizador com alças em bambu", cat: "Casa", platform: "shopee", note: "Multiuso pra casa, banheiro e lavanderia.", price: "R$ 16,99", icon: "🧺", image: "https://cf.shopee.com.br/file/br-11134207-820lu-mpy2dynj9rswd0", url: "https://s.shopee.com.br/3LPmEw3125" },
+    { name: "Kit 7 calcinhas fio sem costura", cat: "Moda", platform: "mercadolivre", note: "Confortáveis e sem marcar, no kit econômico.", price: "R$ 52,37", icon: "🩲", image: "https://http2.mlstatic.com/D_Q_NP_2X_829407-MLB85002533560_052025-V-kit-7-calcinhas-feminina-fio-sem-costura-no-marca.webp", url: "https://meli.la/1eiCBAQ" },
+    { name: "Bule de aço inoxidável com isolamento duplo", cat: "Cozinha", platform: "shopee", note: "Design floral elegante, já vem com filtro.", price: "R$ 74,99", icon: "🫖", image: "https://cf.shopee.com.br/file/cn-11134207-7ras8-m9idrwwei8wi2f", url: "https://s.shopee.com.br/4LIJQZDKOp" },
+    { name: "Tênis Fila Vector masculino esportivo", cat: "Moda", platform: "mercadolivre", note: "Confortável pro treino ou pro dia a dia.", price: "R$ 144,00", icon: "👟", image: "https://http2.mlstatic.com/D_Q_NP_2X_625906-MLB108412932365_032026-V-tnis-fila-vector-masculino-confortavel-estilo-esportivo.webp", url: "https://meli.la/1hv2J6A" },
+    { name: "Escova sanitária com kit 24 refis descartáveis", cat: "Casa", platform: "shopee", note: "Praticidade e higiene sem sujar as mãos.", price: "R$ 67,90", icon: "🚽", image: "https://cf.shopee.com.br/file/br-11134207-820lr-mpt7dncsgweb36", url: "https://s.shopee.com.br/2LXF2F6IkM" },
+    { name: "Kit Casa Cheirosa Hanami — difusor e vela aromática", cat: "Casa", platform: "shopee", note: "Água perfumada e vela pra deixar o ambiente convidativo.", price: "R$ 220,90", icon: "🕯️", image: "https://cf.shopee.com.br/file/br-11134207-820lg-mq6p7zd0114x14", url: "https://s.shopee.com.br/3g2cc28qnF" },
+    { name: "Prato em formato de pão de porcelana 18cm", cat: "Cozinha", platform: "shopee", note: "Detalhe fofo na hora de servir.", price: "R$ 49,90", icon: "🍞", image: "https://cf.shopee.com.br/file/sg-11134201-7rdvt-md1vakozqk8p86", url: "https://s.shopee.com.br/7psBZ9bNoo" },
+    { name: "Panela de pressão revestimento cerâmico 4,2L", cat: "Cozinha", platform: "mercadolivre", note: "Cozinha rápido e sem grudar.", price: "R$ 124,33", icon: "🍲", image: "https://http2.mlstatic.com/D_Q_NP_2X_651210-MLB114500636351_072026-V-panela-de-presso-revestimento-cermico-42l-quality-house.webp", url: "https://meli.la/1EfJdaX" },
+    { name: "Prancha de cabelo profissional titanium bivolt", cat: "Beleza", platform: "shopee", note: "480ºF de temperatura pra um alisado de salão.", price: "R$ 840,90", icon: "💇‍♀️", image: "https://cf.shopee.com.br/file/sg-11134201-822y9-moe6md6c39q892", url: "https://s.shopee.com.br/20uOc4p9Xh" },
+    { name: "Tênis esportivo unissex pra academia e corrida", cat: "Moda", platform: "shopee", note: "Confortável pra treino ou caminhada do dia a dia.", price: "R$ 69,90", icon: "👟", image: "https://cf.shopee.com.br/file/br-11134207-7r98o-mbgqlf6tm4tec6", url: "https://s.shopee.com.br/9fJpjtbdIb" },
+    { name: "Kit garrafa térmica inox 500ml + 3 xícaras", cat: "Cozinha", platform: "mercadolivre", note: "Pra um cafezinho compartilhado com estilo.", price: "R$ 50,70", icon: "☕", image: "https://http2.mlstatic.com/D_Q_NP_2X_784273-MLB88789098184_082025-V.webp", url: "https://meli.la/1ff5H9P" },
+    { name: "Manta Super King gigante em microfibra aveludada", cat: "Casa", platform: "mercadolivre", note: "Macia e quentinha pros dias frios.", price: "R$ 62,73", icon: "🛌", image: "https://http2.mlstatic.com/D_Q_NP_2X_748943-MLB54555412519_032023-V-cobertor-manta-fleece-soft-queen-microfibra-grosso-inverno.webp", url: "https://meli.la/33nrqBH" },
+    { name: "Kit 20 placas 3D tijolinho autocolante 77x70cm", cat: "Casa", platform: "mercadolivre", note: "Revestimento de parede rápido, sem obra.", price: "R$ 104,92", icon: "🧱", image: "https://http2.mlstatic.com/D_Q_NP_2X_868669-MLA108744628710_032026-V.webp", url: "https://meli.la/2AxdLCx" },
+    { name: "Roupeiro basculante / cesto de roupa 30x30x45cm", cat: "Casa", platform: "shopee", note: "Fibra sintética, prático pra lavanderia pequena.", price: "R$ 124,90", icon: "🧺", image: "https://cf.shopee.com.br/file/br-11134207-7r98r-lljzk04l0bpnfe", url: "https://s.shopee.com.br/6AjxYMCIEb" },
+    { name: "Canal úmido organizador de cozinha em aço inox 90x18", cat: "Cozinha", platform: "shopee", note: "5 módulos, direto na pia, marca Tubrax.", price: "R$ 543,90", icon: "🍽️", image: "https://cf.shopee.com.br/file/sg-11134201-7qvfl-lffstac71giqd0", url: "https://s.shopee.com.br/20uOaFUfLu" },
+    { name: "Robô Aspirador Xiaomi S40 Pro com Alexa e Google", cat: "Tech", platform: "mercadolivre", note: "Limpeza automática, branco, bivolt.", price: "R$ 2.029,90", icon: "🤖", image: "https://http2.mlstatic.com/D_Q_NP_2X_982087-MLA108365480935_032026-V.webp", url: "https://meli.la/2XnekDv" },
+    { name: "Porta mantimentos 4 potes herméticos de vidro tampa inox", cat: "Cozinha", platform: "mercadolivre", note: "Organiza a despensa e mantém tudo fresquinho.", price: "R$ 37,49", icon: "🫙", image: "https://http2.mlstatic.com/D_Q_NP_2X_993124-MLB112355991530_062026-V.webp", url: "https://meli.la/2DKkhCp" }
   ];
 
   const CATEGORIES = ["Todos", ...new Set(PRODUCTS.map(p => p.cat))];
@@ -439,14 +492,15 @@
       <article class="card">
         <div class="thumb">
           <span class="badge ${store.cls}">${store.label}</span>
-          ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<span>${p.icon}</span>`}
+          <span>${p.icon}</span>
+          ${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">` : ''}
         </div>
         <div class="card-body">
           <span class="card-cat">${p.cat}</span>
           <h3>${p.name}</h3>
           <p class="card-note">${p.note}</p>
           <div class="card-foot">
-            <span class="price">${p.price}<small>${store.label}</small></span>
+            <span class="price">${p.was ? `<span class="was">${p.was}</span>` : ''}${p.price}<small>${store.label}</small></span>
             <a class="card-cta" href="${p.url}" target="_blank" rel="noopener sponsored">Ver oferta →</a>
           </div>
         </div>
